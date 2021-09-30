@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function createPost(){
+            let username = $('#username').val();
+            let title = $('#title').val();
+            let contents = $('#contents').val();
+            let data = {'username':username, 'title':title,'contents': contents};
+
+            $.ajax({
+                type:"POST",
+                url: "/api/posts",
+                contentType:"application/json",
+                data: JSON.stringify(data),
+                success:(response)=>{
+                    alert("포스트 등록!");
+                    history.back();
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+    <p>글 작성하세욥</p>
+    <div id="post">
+        이름: <input type="text" id="username"></br>
+        제목: <input type="text" id="title"></br>
+        내용: <textarea  id="contents"></textarea></br>
+    </div>
+    <button onclick="createPost()">완료!</button>
+
+
+</body>
+</html>

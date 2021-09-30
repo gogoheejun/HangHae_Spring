@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>모두의블로그</title>
+
+<!--    부트스트랩, jquery 갖다쓰기-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> <!-- bootstrap table 가져오기 --> <script src="https://unpkg.com/bootstrap-table@1.15.5/dist/bootstrap-table.min.js"></script>
+
+    <script>
+        $(document).ready(() => getPosts())
+
+        function getPosts() {
+            $.ajax({
+                type: 'GET',
+                url: 'api/posts',
+                success: (response) => {
+                    for (let i = 0; i < response.length; i++) {
+                        let post = response[i];
+                        let id = post['id'];
+                        let username = post['username'];
+                        let title = post['title'];
+                        let createdAt = post['createdAt'];
+                        addHTML(id, username, title, createdAt);
+                    }
+                }
+            })
+        }
+
+        function getOnePost(id){
+            $.ajax({
+                type: 'GET',
+                url: `api/posts/${id}`,
+                success: (response) => {
+                    let id = response['id'];
+                    let username = response['username'];
+                    let title = response['title'];
+                    let contents = response['contents'];
+                    let createdAt = response['createdAt'];
+                    addContentsHTML(id,username,title,contents,createdAt);
+                }
+            })
+        }
+
+        //목록보여주기
+        function addHTML(id, username, title, createdAt) {
+            let temp = `
+                <tr id="${id}-post">
+                    <td> ${username}</td>
+                    <td onclick=showContents(${id}) >${title}</td>
+                    <td>${createdAt}</td>
+                </tr>
+            `
+            $('#posts-box').append(temp);
+        }
+        function addContentsHTML(id, username, title, contents, createdAt){
+            let temp=`
+                <div id="onepost" style="text-align: center">
+                    <div>
+                        작성자: ${username}
+                    </div>
+                    <div>
+                        제목: ${title}
+                    </div>
+                    <div>
+                        내용: ${contents}
+                    </div>
+                    <div>
+                        작성일자: ${createdAt}
+                    </div>
+                    <button onclick="showLists()">글 목록보기</button>
+                </div>
+            `
+            $(`#onepost-container`).append(temp);
+        }
+
+        //글 조회하기
+        function showContents(id){
+            $('#posts-container').hide();
+            $('#button').hide();
+            getOnePost(id)
+        }
+        function showLists(){
+            $('#onepost').remove();
+            $('#posts-container').show();
+            $('#button').show();
+        }
+    </script>
+</head>
+
+<!-------------------------------------바디------------------------------------------------->
+<body>
+<button id="button" onclick="location.href='./createpost.html'">글 작성하기</button>
+
+<!--목록  보여주는 테이블-->
+<div id="posts-container" class="container"> <!-- bootstrap 테이블 생성 -->
+    <table class="table">
+        <thead>
+        <tr>
+            <th>작성자</th>
+            <th>제목</th>
+            <th>작성시간</th>
+        </tr>
+        </thead>
+        <tbody id="posts-box">
+
+        </tbody>
+    </table>
+</div>
+
+<!--내용 보여주는 곳-->
+<div id="onepost-container">
+
+</div>
+
+
+
+</body>
+</html>
