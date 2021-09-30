@@ -1,16 +1,17 @@
 package com.sparta.springcore;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class ProductService {
 
     private final ProductRepository productRepository;
-    public ProductService(){
-        ProductRepository productRepository = new ProductRepository();
+    public ProductService(ProductRepository productRepository){
         this.productRepository = productRepository;
     }
 
