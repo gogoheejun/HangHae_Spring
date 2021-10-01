@@ -1,15 +1,8 @@
 package com.sparta.springcore.security;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity // 스프링 Security 지원을 가능하게 함
+@EnableGlobalMethodSecurity(securedEnabled = true) // @Secured 어노테이션 활성화
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
@@ -35,9 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
         http.csrf().disable();
-//                .ignoringAntMatchers("/user/**");// 회원 관리 처리 API (POST /user/**) 에 대해 CSRF 무시
 
         http.authorizeRequests()
 // image 폴더를 login 없이 허용
@@ -51,9 +43,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
 // [로그인 기능]
                 .formLogin()
-// 로그인 View 제공 (GET /user/login) 이건 GET으로 올때 처리하는거고
+// 로그인 View 제공 (GET /user/login)
                 .loginPage("/user/login")
-// 로그인 처리 (POST /user/login) 이건 Post로 올때 처리하는거. Spring Security의 Authentiction Manager가 작업하도록
+// 로그인 처리 (POST /user/login)
                 .loginProcessingUrl("/user/login")
 // 로그인 처리 후 성공 시 URL
                 .defaultSuccessUrl("/")
@@ -63,8 +55,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
 // [로그아웃 기능]
                 .logout()
-// 로그아웃 처리 URL
+// 로그아웃 요청 처리 URL
                 .logoutUrl("/user/logout")
-                .permitAll();
+                .permitAll()
+                .and()
+                .exceptionHandling()
+// "접근 불가" 페이지 URL 설정
+                .accessDeniedPage("/forbidden.html");
     }
 }
