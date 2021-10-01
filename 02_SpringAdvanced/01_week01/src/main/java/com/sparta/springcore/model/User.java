@@ -32,10 +32,21 @@ public class User {
     @Enumerated(value = EnumType.STRING) //enum으로 저장하지 않고 String으로 변환해서 저장하겠다
     private UserRoleEnum role;
 
+    @Column(unique = true) //널러블은 기본이 true임
+    private Long kakaoId;
+
     public User(String username, String password, String email, UserRoleEnum role) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.role = role;
+        this.kakaoId = null;
+    }
+    public User(String username, String password, String email, UserRoleEnum role, Long kakaoId) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.kakaoId = kakaoId;
     }
 }
