@@ -22,7 +22,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void registerUser(SignupRequestDto requestDto) {
+    public User registerUser(SignupRequestDto requestDto) {
 // 회원 ID 중복 확인
         String username = requestDto.getUsername();
         Optional<User> found = userRepository.findByUsername(username);
@@ -45,5 +45,8 @@ public class UserService {
 
         User user = new User(username, password, email, role);
         userRepository.save(user);
+        //테스트하기 위해 return은 void에서 User로 바꿈. 실제사용된 곳에서 user를 받는곳이 없기때문에 별 지장없음
+        //TDD에 따르면 테스트하기 좋은 코드가 좋은 것임!!
+        return user;
     }
 }
