@@ -64,10 +64,10 @@ class ProductIntegrationTest {
         ProductMypriceRequestDto requestDto = new ProductMypriceRequestDto(myPrice);
 
 // when
-        Product product = productService.updateProduct(productId, requestDto);
+        Product product = productService.updateProduct(productId, requestDto);//실제 디비까지 접근해서 테스트하는것임
 
 // then
-        assertNotNull(product.getId());
+        assertNotNull(product.getId()); //널이면 테스트깨짐
         assertEquals(userId, product.getUserId());
         assertEquals(this.createdProduct.getTitle(), product.getTitle());
         assertEquals(this.createdProduct.getImage(), product.getImage());

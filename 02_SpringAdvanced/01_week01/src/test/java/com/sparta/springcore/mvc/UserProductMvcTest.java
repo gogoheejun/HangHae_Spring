@@ -46,7 +46,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         }
 )
 class UserProductMvcTest {
-    private MockMvc mvc;
+    private MockMvc mvc;//스프링에서 제공됨
 
     private Principal mockPrincipal;
 
