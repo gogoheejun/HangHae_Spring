@@ -1,11 +1,13 @@
 package com.sparta.springcore.model;
-
 import com.sparta.springcore.dto.ProductRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 @Setter
 @Getter // get 함수를 일괄적으로 만들어줍니다.
@@ -39,12 +41,47 @@ public class Product {
 
     // 관심 상품 생성 시 이용합니다.
     public Product(ProductRequestDto requestDto, Long userId) {
-// 관심상품을 등록한 회원테이블의 Id 저장
+    // Edge케이스들....입력값 Validation
+        if (userId == null || userId <= 0) {
+            throw new IllegalArgumentException("회원 Id 가 유효하지 않습니다.");
+        }
+
+        if (requestDto.getTitle() == null || requestDto.getTitle().isEmpty()) {
+            throw new IllegalArgumentException("저장할 수 있는 상품명이 없습니다.");
+        }
+
+        if (!isValidUrl(requestDto.getImage())) {
+            throw new IllegalArgumentException("상품 이미지 URL 포맷이 맞지 않습니다.");
+        }
+
+        if (!isValidUrl(requestDto.getLink())) {
+            throw new IllegalArgumentException("상품 최저가 페이지 URL 포맷이 맞지 않습니다.");
+        }
+
+        if (requestDto.getLprice() <= 0) {
+            throw new IllegalArgumentException("상품 최저가가 0 이하입니다.");
+        }
+
+// 관심상품을 등록한 회원 Id 저장
         this.userId = userId;
         this.title = requestDto.getTitle();
         this.image = requestDto.getImage();
         this.link = requestDto.getLink();
         this.lprice = requestDto.getLprice();
         this.myprice = 0;
+    }
+
+    boolean isValidUrl(String url)
+    {
+        try {
+            new URL(url).toURI(); //url형태로 바꾸기. 만약 바귀지 않으면 익셉션 자동으로 뜸
+            return true;
+        }
+        catch (URISyntaxException exception) {
+            return false;
+        }
+        catch (MalformedURLException exception) {
+            return false;
+        }
     }
 }
