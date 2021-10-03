@@ -7,6 +7,7 @@ import com.sparta.springcore.service.ProductService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -82,9 +83,13 @@ class ProductIntegrationTest {
     @DisplayName("회원이 등록한 모든 관심상품 조회")
     void test3() {
 // given
+        int page = 0;
+        int size = 10;
+        String sortBy = "id";
+        boolean isAsc = false;
 
 // when
-        List<Product> productList = productService.getProducts(userId, page, size, sortBy, isAsc);
+        Page<Product> productList = productService.getProducts(userId, page, size, sortBy, isAsc);
 
 // then
         //위 when에서 모든 관심상품 조회한 것 중에서, 방금 테스트에서 등록한 상품이 존재하는지? 업데이트한 희망최저가 변경됐는지? 확인
