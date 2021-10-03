@@ -84,7 +84,7 @@ class ProductIntegrationTest {
 // given
 
 // when
-        List<Product> productList = productService.getProducts(userId);
+        List<Product> productList = productService.getProducts(userId, page, size, sortBy, isAsc);
 
 // then
         //위 when에서 모든 관심상품 조회한 것 중에서, 방금 테스트에서 등록한 상품이 존재하는지? 업데이트한 희망최저가 변경됐는지? 확인
