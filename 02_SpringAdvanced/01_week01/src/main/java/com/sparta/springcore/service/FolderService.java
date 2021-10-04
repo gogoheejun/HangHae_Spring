@@ -1,5 +1,4 @@
 package com.sparta.springcore.service;
-
 import com.sparta.springcore.model.Folder;
 import com.sparta.springcore.model.Product;
 import com.sparta.springcore.model.User;
@@ -32,13 +31,19 @@ public class FolderService {
 
     // 로그인한 회원에 폴더들 등록
     public List<Folder> addFolders(List<String> folderNames, User user) {
+        // 1) 입력으로 들어온 폴더 이름을 기준으로, 회원이 이미 생성한 폴더들을 조회합니다.
+        //findAll로 해서 한방에 조회하는게 더 효율이 좋다. 그냥 하나하나비교하는것보다..
+        List<Folder> existFolderList = folderRepository.findAllByUserAndNameIn(user, folderNames);
+
         List<Folder> folderList = new ArrayList<>();
-
         for (String folderName : folderNames) {
-            Folder folder = new Folder(folderName, user);
-            folderList.add(folder);
+            // 2) 이미 생성한 폴더가 아닌 경우만 폴더 생성
+            if (!isExistFolderName(folderName, existFolderList)) {
+                Folder folder = new Folder(folderName, user);
+                folderList.add(folder);
+            }
         }
-
+        //save를 for문 안에서 하나하나하면 디비 계속 왓다갔다거려서 효율좋지 않음
         return folderRepository.saveAll(folderList);
     }
 
@@ -60,7 +65,17 @@ public class FolderService {
         Sort sort = Sort.by(direction, sortBy);
         Pageable pageable = PageRequest.of(page, size, sort);
         Long userId = user.getId();
-        //사실 userId말고 그냥 user넣어도 되는데 jpa연관관계 배우기 전에 Product엔티티 안에 칼럼을 userId로 설정해놔서 이렇게 하는거임
         return productRepository.findAllByUserIdAndFolderList_Id(userId, folderId, pageable);
+    }
+
+    private boolean isExistFolderName(String folderName, List<Folder> existFolderList) {
+        // 기존 폴더 리스트에서 folder name 이 있는지?
+        for (Folder existFolder : existFolderList) {
+            if (existFolder.getName().equals(folderName)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
