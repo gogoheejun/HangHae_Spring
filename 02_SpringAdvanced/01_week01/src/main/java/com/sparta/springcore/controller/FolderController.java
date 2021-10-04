@@ -31,7 +31,13 @@ public class FolderController {
         List<String> folderNames = folderRequestDto.getFolderNames();
         User user = userDetails.getUser();
 
-        List<Folder> folders = folderService.addFolders(folderNames, user);
-        return folders;
+        return folderService.addFolders(folderNames, user);
+    }
+
+    @GetMapping("api/folders")
+    public List<Folder> getFolders(
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ){
+        return folderService.getFolders(userDetails.getUser());
     }
 }

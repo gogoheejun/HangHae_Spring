@@ -1,7 +1,10 @@
 package com.sparta.springcore.service;
 import com.sparta.springcore.dto.ProductMypriceRequestDto;
 import com.sparta.springcore.dto.ProductRequestDto;
+import com.sparta.springcore.model.Folder;
 import com.sparta.springcore.model.Product;
+import com.sparta.springcore.model.User;
+import com.sparta.springcore.repository.FolderRepository;
 import com.sparta.springcore.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,17 +13,24 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final FolderRepository folderRepository;
+
     public static final int MIN_MY_PRICE = 100;
 
     @Autowired
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(
+            ProductRepository productRepository,
+            FolderRepository folderRepository
+    ) {
         this.productRepository = productRepository;
+        this.folderRepository = folderRepository;
     }
 
     public Product createProduct(ProductRequestDto requestDto, Long userId ) {
@@ -62,5 +72,26 @@ public class ProductService {
         Pageable pageable = PageRequest.of(page,size,sort);
 
         return productRepository.findAll(pageable);
+    }
+
+    //첨에 @Transactional 안걸고 했더니 insert쿼리가 안날라갔어. update할때 방법 두가지 있는데
+    //하나는 productRepository.save(product) 직접 하는거고
+    //또하나는 지금 @Transactional 추가해서 자동으로 save시키는 것
+    @Transactional
+    public Product addFolder(Long productId, Long folderId, User user) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(()->new NullPointerException("해당 아이디가 존재하지 않습니다"));
+        Folder folder = folderRepository.findById(folderId)
+                .orElseThrow(()-> new NullPointerException("해당 아이디가 존재하지 않습니다"));
+
+        //아래는 그냥 ui로만 요청을 할땐 필요없지만, 혹시 포스트맨같은걸로 요청하면 문제가 생김.
+        //그러므로 요청한사용자가 자기의 상품에 폴더를 추가하는지 봐야 함.
+        Long loginUserId = user.getId();
+        if(!product.getUserId().equals(loginUserId) || !folder.getUser().getId().equals(loginUserId)){
+            throw new IllegalArgumentException("회원님의 관심상품이 아니거나, 회원님의 폴더가 아닙니다.");
+        }
+
+        product.addFolder(folder);
+        return product;
     }
 }
