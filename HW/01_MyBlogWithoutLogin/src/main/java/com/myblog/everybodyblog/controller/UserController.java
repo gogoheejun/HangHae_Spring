@@ -7,6 +7,7 @@ import com.myblog.everybodyblog.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +25,12 @@ public class UserController {
 
     //회원가입페이지
     @GetMapping("/user/signup")
-    public String signup(){
+    public String signup(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        if(userDetails != null){
+            model.addAttribute("entry","already-logged-in");
+            model.addAttribute("username", userDetails.getUsername());
+            return "index";
+        }
         return "signup";
     }
 
