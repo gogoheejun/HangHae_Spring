@@ -28,10 +28,15 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     implementation 'org.springframework.boot:spring-boot-starter-security'
-
+    //타임리프
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 //    implementation 'com.navercorp.lucy:lucy-xss-servlet:2.0.1'
+
+    //validation
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.4.4'
 }
 
 test {
     useJUnitPlatform()
 }
+
