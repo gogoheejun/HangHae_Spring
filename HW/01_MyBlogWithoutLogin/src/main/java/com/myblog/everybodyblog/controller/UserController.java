@@ -1,8 +1,10 @@
 package com.myblog.everybodyblog.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.myblog.everybodyblog.dto.SignupRequestDto;
 import com.myblog.everybodyblog.handler.ex.CustomValidationException;
 import com.myblog.everybodyblog.security.UserDetailsImpl;
+import com.myblog.everybodyblog.service.KakaoUserService;
 import com.myblog.everybodyblog.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -12,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -22,6 +25,7 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final KakaoUserService kakaoUserService;
 
     //회원가입페이지
     @GetMapping("/user/signup")
@@ -54,4 +58,10 @@ public class UserController {
 
     @GetMapping("/user/login")
     public String login(){return "login";}
+
+    @GetMapping("/user/kakao/callback")
+    public String kakaoLogin(@RequestParam String code) throws JsonProcessingException {
+        kakaoUserService.kakaoLogin(code);
+        return "redirect:/";
+    }
 }
