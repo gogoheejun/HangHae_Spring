@@ -1,11 +1,14 @@
 package com.myblog.everybodyblog.service;
 
 import com.myblog.everybodyblog.dto.SignupRequestDto;
+import com.myblog.everybodyblog.handler.ex.CustomValidationException;
 import com.myblog.everybodyblog.model.User;
 import com.myblog.everybodyblog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -16,16 +19,19 @@ public class UserService {
     public void registerUser(SignupRequestDto requestDto){
         String username = requestDto.getUsername();
         String password = requestDto.getPassword();
+        String passwordCheck = requestDto.getPasswordCheck();
 
         //비밀번호 확인
-        //1. - 닉네임은 `최소 3자 이상, 알파벳 대소문자(a~z, A~Z), 숫자(0~9)`로 구성하기
-        //2. 비밀번호는 `최소 4자 이상이며, 닉네임과 같은 값이 포함된 경우 회원가입에 실패`로 만들기
-        //3. 확인비밀번호 일치
-
+        Map<String,String> errorMap = new HashMap<>();
+        if(!password.equals(passwordCheck)) {
+            errorMap.put("password","비민번호 체크해주세요");
+            throw new CustomValidationException("유효성 검사실패", errorMap);
+        }
         //중복사용자 확인
         Optional<User> found = userRepository.findByUsername(username);
         if(found.isPresent()){
-            throw new IllegalArgumentException("중복된 닉네임입니다.");
+            errorMap.put("username","중복된 닉네임입니다.");
+            throw new CustomValidationException("아이디 중복",errorMap);
         }
 
         User user = new User(username, password);
