@@ -1,14 +1,21 @@
 package com.myblog.everybodyblog.security;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity // 스프링 Security 지원을 가능하게 함
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Bean
+    public BCryptPasswordEncoder encodePassword(){
+        return new BCryptPasswordEncoder();
+    }
 
     @Override
     public void configure(WebSecurity web){
@@ -24,17 +31,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/images/**").permitAll()
                 .antMatchers("/css/**").permitAll()
                 .antMatchers("/user/**").permitAll()
+                .antMatchers("/").permitAll()
 // 어떤 요청이든 '인증'
                 .anyRequest().authenticated()
                 .and()
 // 로그인 기능 허용
                 .formLogin()
-//                .loginPage("/user/login")
+                .loginPage("/user/login")
+                .loginProcessingUrl("/user/login")
                 .defaultSuccessUrl("/")
-                .permitAll()//모든페이지에 authenticated걸려있으면 로그인이랑 로그아웃도 못하니까 저 두개는 permit을 걸어놓음
+                .failureUrl("/user/login?error")
+                .permitAll()
                 .and()
 // 로그아웃 기능 허용
                 .logout()
-                .permitAll();//모든페이지에 authenticated걸려있으면 로그인이랑 로그아웃도 못하니까 저 두개는 permit을 걸어놓음
+                .logoutUrl("/user/logout")
+                .permitAll();
     }
 }

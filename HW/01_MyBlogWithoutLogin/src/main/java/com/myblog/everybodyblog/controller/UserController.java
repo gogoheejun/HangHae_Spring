@@ -2,8 +2,10 @@ package com.myblog.everybodyblog.controller;
 
 import com.myblog.everybodyblog.dto.SignupRequestDto;
 import com.myblog.everybodyblog.handler.ex.CustomValidationException;
+import com.myblog.everybodyblog.security.UserDetailsImpl;
 import com.myblog.everybodyblog.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;

@@ -94,7 +94,10 @@
 
 <!-------------------------------------바디------------------------------------------------->
 <body>
-<button id="button" onclick="location.href='./createpost.html'">글 작성하기</button>
+<div>
+    <span th:text="${username}"></span>님 안녕하세요!
+</div>
+<button id="button" onclick="location.href='createpost.html'">글 작성하기</button>
 
 <!--목록  보여주는 테이블-->
 <div id="posts-container" class="container"> <!-- bootstrap 테이블 생성 -->

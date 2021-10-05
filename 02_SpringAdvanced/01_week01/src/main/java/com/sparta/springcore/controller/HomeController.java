@@ -32,7 +32,7 @@ public class HomeController {
         }
 
         List<Folder> folderList = folderService.getFolders(userDetails.getUser());
-        model.addAttribute("folders", folderList);
+        model.addAttribute( "folders", folderList);
 
         return "index";
     }
