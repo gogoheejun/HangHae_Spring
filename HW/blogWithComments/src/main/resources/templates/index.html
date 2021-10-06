@@ -214,6 +214,19 @@
 </head>
 
 <body>
+<span th:if="${entry} != null">
+    <script> alert("이미 로그인했어요")</script>
+</span>
+<div>
+    <span th:text="${username}"></span>님 안녕하세요!
+</div>
+<form id="login" method="post" action="/user/login">
+    <button onclick="document.getElementById('login').submit();">로그인</button>
+</form>
+<form id="logout" method="post" action="/user/logout">
+    <button onclick="document.getElementById('logout').submit();">로그아웃</button>
+</form>
+
 <div class="background-header">
 </div>
 <div class="background-body">
@@ -221,8 +234,7 @@
 </div>
 <div class="wrap">
     <div class="header">
-        <h2>항해99 바다 위 대나무숲<br><br>
-            맘껏 외치세요 무야호!</h2>
+        <h2>로그인 안해도 괜찮아요 일단 써봐요!</h2>
     </div>
     <div class="to-write">
         <button type="button" class="btn btn-primary" onclick="location.href='write.html'"><b>글 쓰 기</b></button>
