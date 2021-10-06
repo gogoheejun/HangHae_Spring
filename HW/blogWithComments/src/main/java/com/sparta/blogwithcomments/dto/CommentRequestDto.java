@@ -1,9 +1,11 @@
 package com.sparta.blogwithcomments.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class CommentRequestDto {
-    private String userId;
+    private String contentId;
     private String comment;
 }

@@ -203,10 +203,9 @@
         </div>
     </div>
 <!--   현재 페이지의 아이디 넘겨야 함-->
-    <span th:text="${contentId}"></span>
     <form id="writecomment" th:action="@{/api/comment}" method="post">
         <input type="text" name="comment"><br>
-        <input type="number" name="contentId" th:value="${contentId}"><br>
+        <input type="text" name="contentId" th:value="${contentId}"><br>
         <button onclick="document.getElementById('writecomment').submit();">댓글 입력</button>
     </form>
     <br>
@@ -218,19 +217,18 @@
             <thead>
             <tr>
                 <th scope="col">작성자</th>
-                <th scope="col">제목</th>
                 <th scope="col">내용</th>
                 <th scope="col">작성일자</th>
             </tr>
             </thead>
             <tbody>
 
-            <tr>
-                <th>Default</th>
-                <td>Column content</td>
-                <td>Column content</td>
-                <td>Column content</td>
+            <tr th:each="list : ${commentList}">
+                <td th:text="${list.getUser().getUsername()}"> </td>
+                <td th:text="${list.getComment()}"></td>
+                <td th:text="${list.getCreatedAt()}"></td>
             </tr>
+
 
             </tbody>
         </table>

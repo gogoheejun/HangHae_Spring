@@ -1,5 +1,6 @@
 package com.sparta.blogwithcomments.service;
 
+import com.sparta.blogwithcomments.model.Comment;
 import com.sparta.blogwithcomments.model.Content;
 import com.sparta.blogwithcomments.dto.ContentRequestDto;
 import com.sparta.blogwithcomments.repository.ContentRepository;
@@ -7,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service

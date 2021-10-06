@@ -8,18 +8,26 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Comment {
+public class Comment extends Timestamped{
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     private Long id;
 
     //작성자는 익명이므로 매핑이 안됨.어떤 글에 대한 댓글이냐로 해야함
-    @Column(nullable = false)
-    private String contentId;
+    @ManyToOne
+    @JoinColumn(name="CONTENT_ID",nullable = false)
+    private Content content;
 
-    @Column(nullable = false)
-    private String userId;
+    @ManyToOne
+    @JoinColumn(name = "USER_ID", nullable = false)
+    private User user;
 
     @Column(nullable = false)
     private String comment;
+
+    public Comment(Content content, User user, String comment){
+        this.content = content;
+        this.user = user;
+        this.comment = comment;
+    }
 }
