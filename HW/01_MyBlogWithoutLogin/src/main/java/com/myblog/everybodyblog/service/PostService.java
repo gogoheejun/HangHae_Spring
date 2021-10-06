@@ -2,7 +2,7 @@ package com.myblog.everybodyblog.service;
 
 import com.myblog.everybodyblog.domain.Post;
 import com.myblog.everybodyblog.domain.PostRepository;
-import com.myblog.everybodyblog.domain.PostRequestDto;
+import com.myblog.everybodyblog.dto.PostRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

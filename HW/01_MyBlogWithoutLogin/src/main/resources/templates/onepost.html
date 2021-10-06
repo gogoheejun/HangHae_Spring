@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+
+</head>
+<body>
+
+<h2> 제목: <span th:text="${title}"></span> </h2>
+<p><small>작성자: <span th:text="${username}"></span></small></p>
+<p>내용: <span th:text="${contents}"></span></p>
+<p><small>작성일자: <span th:text="${createdAt}"></span></small></p>
+
+-----------------------댓글작성--------------------------
+<form action="#" method="post">
+    <div class="form-group">
+        <input class="form-control" id="exampleTextarea" name="comment" rows="3">
+    </div>
+    <button onclick=alert()>작성완료</button>
+</form>
+
+
+-------------------------댓글----------------------------
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th scope="col">작성자</th>
+        <th scope="col">제목</th>
+        <th scope="col">내용</th>
+        <th scope="col">작성일자</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr>
+        <th>Default</th>
+        <td>Column content</td>
+        <td>Column content</td>
+        <td>Column content</td>
+    </tr>
+
+    </tbody>
+</table>
+</body>
+</html>

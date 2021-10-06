@@ -1,5 +1,6 @@
 package com.myblog.everybodyblog.domain;
 
+import com.myblog.everybodyblog.dto.PostRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

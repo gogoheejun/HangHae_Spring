@@ -5,33 +5,54 @@
     <title>Title</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-        function createPost(){
-            let username = $('#username').val();
-            let title = $('#title').val();
-            let contents = $('#contents').val();
-            let data = {'username':username, 'title':title,'contents': contents};
-
-            $.ajax({
-                type:"POST",
-                url: "/api/posts",
-                contentType:"application/json",
-                data: JSON.stringify(data),
-                success:(response)=>{
-                    alert("포스트 등록!");
-                    history.back();
-                }
-            })
-        }
+        // function createPost(){
+        //     let username = $('#username').val();
+        //     let title = $('#title').val();
+        //     let contents = $('#contents').val();
+        //     let data = {'username':username, 'title':title,'contents': contents};
+        //     console.log(data);
+        //     $.ajax({
+        //         type:"POST",
+        //         url: "/api/posts",
+        //         contentType:"application/json",
+        //         data: JSON.stringify(data),
+        //         success:(response)=>{
+        //             console.log(response);
+        //             alert("포스트 등록!");
+        //             history.back();
+        //         }
+        //     })
+        // }
     </script>
 </head>
 <body>
     <p>글 작성하세욥</p>
-    <div id="post">
-        이름: <input type="text" id="username"></br>
-        제목: <input type="text" id="title"></br>
-        내용: <textarea  id="contents"></textarea></br>
-    </div>
-    <button onclick="createPost()">완료!</button>
+<!--    <div id="post">-->
+<!--        이름: <input type="text" id="username"></br>-->
+<!--        제목: <input type="text" id="title"></br>-->
+<!--        내용: <textarea  id="contents"></textarea></br>-->
+<!--    </div>-->
+<!--    <button onclick="createPost()">완료!</button>-->
+
+
+    <form action="/api/posts" method="post">
+        <div class="login-id-label">작성자 이름</div>
+        <label>
+            <input type="text" name="username" placeholder="Username" class="login-input-box">
+        </label>
+
+        <div class="login-id-label">제목</div>
+        <label>
+            <input type="text" name="title" class="login-input-box">
+        </label>
+
+        <div class="login-id-label">내용</div>
+        <label>
+            <input type="text" name="contents" class="login-input-box">
+        </label>
+
+        <button id="login-id-submit">글 등록</button>
+    </form>
 
 
 </body>

@@ -1,4 +1,4 @@
-package com.myblog.everybodyblog.service;
+package com.myblog.everybodyblog.security;
 
 import com.myblog.everybodyblog.model.User;
 import com.myblog.everybodyblog.repository.UserRepository;

@@ -25,13 +25,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.csrf().ignoringAntMatchers("/user/**");
+        http.csrf().disable();
 
         http.authorizeRequests()
                 .antMatchers("/images/**").permitAll()
                 .antMatchers("/css/**").permitAll()
                 .antMatchers("/user/**").permitAll()
                 .antMatchers("/").permitAll()
+                .antMatchers("/api/**").permitAll()
 // 어떤 요청이든 '인증'
                 .anyRequest().authenticated()
                 .and()
