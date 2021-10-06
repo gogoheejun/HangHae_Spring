@@ -202,6 +202,15 @@
 
         </div>
     </div>
+<!--   현재 페이지의 아이디 넘겨야 함-->
+    <span th:text="${contentId}"></span>
+    <form id="writecomment" th:action="@{/api/comment}" method="post">
+        <input type="text" name="comment"><br>
+        <input type="number" name="contentId" th:value="${contentId}"><br>
+        <button onclick="document.getElementById('writecomment').submit();">댓글 입력</button>
+    </form>
+    <br>
+    <br>
 <!--   여러개 넣는건 4-13강 33분-->
     <h4>댓글목록</h4>
     <div class="background">

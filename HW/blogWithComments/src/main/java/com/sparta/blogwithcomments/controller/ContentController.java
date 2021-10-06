@@ -20,6 +20,7 @@ public class ContentController {
         System.out.println("hihi");
         Content content =  contentRepository.findById(id).orElseThrow(
                 ()->new IllegalArgumentException("contentsId가 존재하지 않습니다."));
+        model.addAttribute("contentId",id);
         model.addAttribute("username",content.getName());
         model.addAttribute("title",content.getTitle());
         model.addAttribute("contents",content.getContents());
