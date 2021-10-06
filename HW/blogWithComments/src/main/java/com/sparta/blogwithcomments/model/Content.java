@@ -1,5 +1,6 @@
 package com.sparta.blogwithcomments.model;
 
+import com.sparta.blogwithcomments.dto.ContentRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

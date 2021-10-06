@@ -1,7 +1,7 @@
 package com.sparta.blogwithcomments.controller;
 
 import com.sparta.blogwithcomments.model.Content;
-import com.sparta.blogwithcomments.model.ContentRequestDto;
+import com.sparta.blogwithcomments.dto.ContentRequestDto;
 import com.sparta.blogwithcomments.repository.ContentRepository;
 import com.sparta.blogwithcomments.service.ContentService;
 import lombok.RequiredArgsConstructor;
