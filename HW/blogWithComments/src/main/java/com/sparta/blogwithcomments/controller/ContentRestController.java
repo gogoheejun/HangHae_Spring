@@ -22,12 +22,12 @@ public class ContentRestController {
     }
 
     // 게시글 특정 조회
-    @GetMapping("/api/contents/{id}")
-    public Content getContents(@PathVariable Long id) {
-        Content content =  contentRepository.findById(id).orElseThrow(
-                ()->new IllegalArgumentException("contentsId가 존재하지 않습니다."));
-        return content;
-    }
+//    @GetMapping("/api/contents/{id}")
+//    public Content getContents(@PathVariable Long id) {
+//        Content content =  contentRepository.findById(id).orElseThrow(
+//                ()->new IllegalArgumentException("contentsId가 존재하지 않습니다."));
+//        return content;
+//    }
 
     // 게시글 생성
     @PostMapping("/api/contents")

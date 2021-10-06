@@ -42,7 +42,7 @@
         }
 
         function makeMessage(id, name, title, contents, modifiedAt) {
-            return `<a href="detail.html?id=${id}">
+            return `<a href="/api/contents/${id}">
                         <div class="card">
                             <div class="metadata">
                                <div id="${id}-name" class="name">
@@ -56,8 +56,9 @@
                             <div class="contents" id="${id}-contents" >
                                ${contents}
                             </div>
-                            </a>
-                        </div>`;
+                            </div>
+                        </a>
+                       `;
         }
 
     </script>
@@ -227,26 +228,24 @@
         <button type="button" class="btn btn-primary" onclick="location.href='write.html'"><b>글 쓰 기</b></button>
     </div>
     <div id="cards-box" class="area-read">
-        <div class="card">
-            <div class="metadata">
-                <div class="date">
-                    October 10, 2020
+        <a href="detail.html?id=${id}">
+            <div class="card">
+                <div class="metadata">
+                    <div id="${id}-name" class="name">
+                        ${name}
+                    </div>
+                    <div class="date">
+                        ${modifiedAt}
+                    </div>
                 </div>
-                <div class="name">
-                    anonymous
-                </div>
-            </div>
-            <h2>asd</h2>
-            <div class="contents">
-                <div id="1-contents" class="text">
-                    dsafnkalfklewakflekelafkleajfkleafkldsankflenwaklfnekwlafneklwanfkelawnfkelanfkleanfklew
-                </div>
-                <div id="1-editarea" class="edit">
-                    <textarea id="1-textarea" class="te-edit" name="" id="" cols="30" rows="5"></textarea>
+                <h2 class='title' id="${id}-title">"${title}"</h2>
+                <div class="contents" id="${id}-contents" >
+                    ${contents}
                 </div>
             </div>
+        </a>
 
-        </div>
+
     </div>
 </div>
 </body>
