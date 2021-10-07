@@ -32,7 +32,8 @@ public class CommentController {
         Optional<Content> thisContent = contentRepository.findById(contentId);
         Comment thisComment = new Comment(thisContent.get(), userDetails.getUser(), comment);
         commentRepository.save(thisComment);
-        return "index";
+        String url = "/api/contents/"+contentId;
+        return "redirect:"+url;
     }
     //댓글불러오기
 
