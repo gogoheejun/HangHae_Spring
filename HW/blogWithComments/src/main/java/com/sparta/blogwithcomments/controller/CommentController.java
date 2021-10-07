@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -38,12 +39,35 @@ public class CommentController {
         return "redirect:"+url;
     }
 
+    //특정 게시물에 대한 댓글조회
+    @GetMapping("/api/comment/{contentId}")
+    @ResponseBody
+    public List<Comment> getComments(@PathVariable Long contentId){
+        return commentRepository.findAllByContentIdOrderByCreatedAtDesc(contentId);
+    }
+
     //댓글 수정하기
     @PutMapping("/api/comment/{commentId}")
-    public Long updateProduct(@PathVariable Long commentId, @RequestBody CommentRequestDto requestDto){
-        Comment comment = commentService.updateComment(commentId,requestDto);
-//        Long contentId = comment.getContent().getId();
-//        String url = "/api/contents/"+contentId;
+    @ResponseBody
+    public Long updateProduct(@PathVariable Long commentId,
+                              @RequestBody CommentRequestDto requestDto,
+                              @AuthenticationPrincipal UserDetailsImpl userDetails){
+        //내가 쓴글인지 확인
+        Long writerId = commentRepository.findById(commentId).get().getUser().getId();
+        System.out.println("쓴사람: "+writerId);
+        if(userDetails.getUser().getId() != writerId) {
+            return -1L;
+        }else{
+            Comment comment = commentService.updateComment(commentId,requestDto);
+        }
+        return commentId;
+    }
+
+    // 댓글 삭제
+    @DeleteMapping("/api/comment/{commentId}")
+    @ResponseBody
+    public Long deleteReply(@PathVariable Long commentId) {
+        commentRepository.deleteById(commentId);
         return commentId;
     }
 

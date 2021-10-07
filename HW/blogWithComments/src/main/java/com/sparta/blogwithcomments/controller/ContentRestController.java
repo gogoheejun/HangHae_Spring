@@ -21,7 +21,7 @@ public class ContentRestController {
         return contentRepository.findAllByOrderByCreatedAtDesc();
     }
 
-    // 게시글 특정 조회
+    // 게시글 detail 조회->템플릿엔진으로 바꿧음.
 //    @GetMapping("/api/contents/{id}")
 //    public Content getContents(@PathVariable Long id) {
 //        Content content =  contentRepository.findById(id).orElseThrow(

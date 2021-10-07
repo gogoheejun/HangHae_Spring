@@ -178,8 +178,8 @@
             width: 100%; /* Full width */
             height: 100%; /* Full height */
             overflow: auto; /* Enable scroll if needed */
-            background-color: rgb(0,0,0); /* Fallback color */
-            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            background-color: rgb(0, 0, 0); /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
         }
 
         /* Modal Content/Box */
@@ -192,20 +192,136 @@
         }
 
     </style>
+    <script>
+        $(document).ready(function () {
+            getComments();
+        })
+
+        function getComments() {
+            let idx = location.href.split("/")[5] //http://localhost:8080/api/contents/1 면 1이 나옴
+            $.ajax({
+                type: "GET",
+                url: `/api/comment/${idx}`,
+                success: (res) => {
+                    for (let i = 0; i < res.length; i++) {
+                        let comment = res[i];
+                        let id = comment.id;
+                        let username = comment.user.username;
+                        let commentStory = comment.comment;
+                        let modifiedAt = comment.modifiedAt;
+                        addReplyHTML(id, username, commentStory, modifiedAt);
+                    }
+                }
+            })
+        }
+
+        function addReplyHTML(id, username, reply, modifiedAt) {
+            let tempHtml = makeReply(id, username, reply, modifiedAt);
+            $('#comment-box').append(tempHtml);
+        }
+
+
+        // 댓글의 형태를 만들어 줍니다.
+        function makeReply(id, username, reply, modifiedAt) {
+            // let loginUsername = [[${username}]];
+            // console.log(loginUsername)
+            // let hide = "hide"
+            // if (loginUsername == username) {
+            //     hide = ""
+            // }
+            return `<div class="card">
+                        <div class="metadata">
+                           <div id="${id}-name" class="name">
+                               ${username}
+                           </div>
+                           <div class="date">
+                               ${modifiedAt}
+                           </div>
+                        </div>
+                        <div class="contents" id="${id}-reply" >
+                           ${reply}
+                        </div>
+                        <div id="${id}-editarea" class="edit">
+                            <textarea id="${id}-textarea" class="te-edit" name="" id="" cols="30" rows="5"></textarea>
+                         </div>
+                             <div class="footer">
+                                <button id="${id}-edit" alt="" onClick="editPost('${id}')">수정</button>
+                                <button id="${id}-submit" onClick="submitNew('${id}')">완료오오오</button>
+                                <button id="${id}-delete" onClick="deleteReply('${id}')">삭제</button>
+                            </div>
+                    </div>`;
+        }
+
+        function editPost(id) {
+            showEdits(id);
+            let contents = $(`#${id}-reply`).text().trim();
+            $(`#${id}-textarea`).val(contents);
+        }
+
+        function showEdits(id) {
+            $(`#${id}-editarea`).show();
+            $(`#${id}-submit`).show();
+            $(`#${id}-delete`).show();
+
+            $(`#${id}-reply`).hide();
+            $(`#${id}-edit`).hide();
+        }
+        function submitNew(id) {
+            // alert(id);
+            // 1. 작성 대상 메모 contents 를 확인합니다
+            let comment = $(`#${id}-textarea`).val().trim();
+            // 2. 작성한 메모가 올바른지 isValidContents 함수를 통해 확인합니다.
+            if (isValidContents(comment) == false) {
+                return;
+            }
+            // 3. 전달할 data JSON으로 만듭니다.
+            let data = {"comment": comment};
+            // 4. PUT /api/memos/{id} 에 data를 전달합니다.
+            $.ajax({
+                type: "PUT",
+                url: `/api/comment/${id}`,
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function (response) {
+                    if(response == -1){
+                        alert("본인의 댓글만 수정가능합니다")
+                    }
+                    else{alert('메시지 변경에 성공하였습니다.');}
+                    window.location.reload();
+                }
+            });
+        }
+        // 글이 정상인지 확인
+        function isValidContents(contents) {
+            if (contents == '') {
+                alert('댓글 내용을 입력해주세요');
+                return false;
+            }
+            return true;
+        }
+
+        function deleteReply(id) {
+            if (confirm("정말 삭제하시겠습니까??") == false) {
+                return
+            }
+            $.ajax({
+                type: "DELETE",
+                url: `/api/comment/${id}`,
+                success: function (response) {
+                    alert('댓글 삭제에 성공하였습니다.');
+                    window.location.reload();
+                }
+            })
+        }
+    </script>
+
 
 </head>
 <body>
 
 
-
 <div class="wrap">
-<!--    <a href="/" id="home">Home</a>-->
-<!--    <div class="header">-->
-<!--        <h2>항해99 바다 위 대나무숲<br><br>-->
-<!--            맘껏 외치세요 무야호!</h2>-->
-<!--    </div>-->
-
-
+<!--    content영역-->
     <div id="cards-box" class="area-read">
         <div class="card">
             <!-- date/name 영역 -->
@@ -231,7 +347,7 @@
 
         </div>
     </div>
-<!--   현재 페이지의 아이디 넘겨야 함-->
+    <!--   댓글작성 영역-->
     <form id="writecomment" th:action="@{/api/comment}" method="post">
         <input type="text" name="comment">
         <input type="text" style="visibility: hidden" name="contentId" th:value="${contentId}">
@@ -239,83 +355,14 @@
     </form>
     <br>
     <br>
-<!--   여러개 넣는건 4-13강 33분-->
+    <!--  댓글목록 영역 -->
     <h4>댓글목록</h4>
     <div class="background">
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th scope="col">작성자</th>
-                <th scope="col">내용</th>
-                <th scope="col">작성일자</th>
-                <th></th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-
-            <tr th:each="list : ${commentList}">
-                <td th:text="${list.getUser().getUsername()}"> </td>
-                <td th:text="${list.getComment()}"></td>
-                <td th:text="${list.getCreatedAt()}"></td>
-                <td id="commentId"><span th:val="${list.getId()}"></span></td>
-                <td><button onclick="$('#myModal').show();">수정</button></td>
-            </tr>
-
-
-            </tbody>
-        </table>
-    </div>
-
-    <!-- The Modal -->
-    <div id="myModal" class="modal">
-
-        <!-- Modal content -->
-        <div class="modal-content">
-
-            <p style="text-align: center; line-height: 1.5;"><br /></p>
-            <label>
-                <textarea id="editarea"></textarea>
-            </label>
-            <div style="cursor:pointer;background-color:#4871ec;text-align: center;padding-bottom: 10px;padding-top: 10px;"
-                 onclick="submitEdit()">
-                <span class="pop_bt" style="font-size: 13pt;" >
-                     수정완료
-                </span>
-            </div>
-            <div style="cursor:pointer;background-color:#bec2ce;text-align: center;padding-bottom: 10px;padding-top: 10px;" onclick="close_pop()">
-                <span class="pop_bt" style="font-size: 13pt;" >
-                     취소
-                </span>
-            </div>
+        <div id="comment-box" class="area-read">
         </div>
-
     </div>
-    <!--End Modal-->
 
-    <script type="text/javascript">
-        function close_pop(flag) {
-            $('#myModal').hide();
-        }
-        function submitEdit(){
-            //댓글내용, 댓글id보내야 함
-            let comment = $(`#editarea`).val();
-            let commentId = $(`#commentId`).val();
-            alert(commentId);
-            let data = {"comment":comment, "commentId":commentId};
 
-            $.ajax({
-                type:"PUT",
-                url:`/api/comment/${id}`,
-                contentType: "application/json",
-                data: JSON.stringify(data),
-                success:(response)=>{
-                    alert("메시지 변경에 성공하였습니다");
-                    window.location.reload();
-                }
-            })
-        }
-    </script>
 </div>
 </body>
 </html>
