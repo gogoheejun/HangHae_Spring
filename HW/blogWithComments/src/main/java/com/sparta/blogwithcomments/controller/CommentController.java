@@ -7,6 +7,7 @@ import com.sparta.blogwithcomments.model.Content;
 import com.sparta.blogwithcomments.repository.CommentRepository;
 import com.sparta.blogwithcomments.repository.ContentRepository;
 import com.sparta.blogwithcomments.security.UserDetailsImpl;
+import com.sparta.blogwithcomments.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ public class CommentController {
 
     private final CommentRepository commentRepository;
     private final ContentRepository contentRepository;
+    private final CommentService commentService;
 //   댓글 저장하기
     @PostMapping("api/comment")
     public String addComment(
@@ -35,7 +37,16 @@ public class CommentController {
         String url = "/api/contents/"+contentId;
         return "redirect:"+url;
     }
-    //댓글불러오기
+
+    //댓글 수정하기
+    @PutMapping("/api/comment/{commentId}")
+    public Long updateProduct(@PathVariable Long commentId, @RequestBody CommentRequestDto requestDto){
+        Comment comment = commentService.updateComment(commentId,requestDto);
+//        Long contentId = comment.getContent().getId();
+//        String url = "/api/contents/"+contentId;
+        return commentId;
+    }
+
 
 
 }
