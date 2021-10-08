@@ -3,18 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>바다 위 대나무 숲</title>
+    <title>모두의 블로그!</title>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
 
     <style>
         @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
 
         * {
-            font-family: 'Jua', sans-serif !important;
+            font-family: 'Nanum Myeongjo', serif;
         }
 
         body {
@@ -75,7 +76,7 @@
             line-height: 0.79;
             letter-spacing: -0.5px;
             text-align: center;
-            color: #ffffff;
+            color: #254806;
             margin-top: 170px;
         }
 
@@ -91,7 +92,7 @@
             line-height: 1.5;
             letter-spacing: -1.12px;
             text-align: center;
-            color: #ffffff;
+            color: #33f043;
         }
 
         .area-write img {
@@ -106,7 +107,14 @@
         .card {
             width: 538px;
             border-radius: 5px;
-            background-color: #ffffff;
+            background-color: #1f8127;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+        }
+        .small-card {
+            width: 538px;
+            border-radius: 5px;
+            background-color: #c8facc;
             margin-bottom: 30px;
             padding-bottom: 20px;
         }
@@ -229,7 +237,7 @@
             // if (loginUsername == username) {
             //     hide = ""
             // }
-            return `<div class="card">
+            return `<div class="small-card">
                         <div class="metadata">
                            <div id="${id}-name" class="name">
                                ${username}
@@ -242,7 +250,7 @@
                            ${reply}
                         </div>
                         <div id="${id}-editarea" class="edit">
-                            <textarea id="${id}-textarea" class="te-edit" name="" id="" cols="30" rows="5"></textarea>
+                            <textarea style="font-size: x-large"  id="${id}-textarea" class="te-edit" name="" id="" cols="30" rows="5"></textarea>
                          </div>
                              <div class="footer">
                                 <button id="${id}-edit" alt="" onClick="editPost('${id}')">수정</button>
@@ -308,7 +316,10 @@
                 type: "DELETE",
                 url: `/api/comment/${id}`,
                 success: function (response) {
-                    alert('댓글 삭제에 성공하였습니다.');
+                    if(response == -1){
+                        alert("본인의 댓글만 수정가능합니다")
+                    }
+                    else{alert('댓글 삭제 완료!.');}
                     window.location.reload();
                 }
             })
@@ -323,7 +334,7 @@
 <div class="wrap">
 <!--    content영역-->
     <div id="cards-box" class="area-read">
-        <div class="card">
+        <div class="card" >
             <!-- date/name 영역 -->
             <div class="metadata">
                 <div class="date">

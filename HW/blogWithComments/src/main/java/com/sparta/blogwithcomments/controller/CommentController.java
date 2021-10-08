@@ -54,7 +54,6 @@ public class CommentController {
                               @AuthenticationPrincipal UserDetailsImpl userDetails){
         //내가 쓴글인지 확인
         Long writerId = commentRepository.findById(commentId).get().getUser().getId();
-        System.out.println("쓴사람: "+writerId);
         if(userDetails.getUser().getId() != writerId) {
             return -1L;
         }else{
@@ -66,8 +65,16 @@ public class CommentController {
     // 댓글 삭제
     @DeleteMapping("/api/comment/{commentId}")
     @ResponseBody
-    public Long deleteReply(@PathVariable Long commentId) {
-        commentRepository.deleteById(commentId);
+    public Long deleteReply(@PathVariable Long commentId,
+                            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        Long writerId = commentRepository.findById(commentId).get().getUser().getId();
+        if(userDetails.getUser().getId() != writerId){
+            return -1L;
+        }else{
+            System.out.println("delete1");
+            commentRepository.deleteById(commentId);
+        }
+        System.out.println("delete2");
         return commentId;
     }
 

@@ -63,7 +63,7 @@ class UserServiceTest {
     @DisplayName("실패케이스")
     class FailCases{
         @Test
-        @DisplayName("중복사용자 확인")
+        @DisplayName("아이디 중복 확인")
         void mustFail1(){
         //given
             SignupRequestDto requestDto = new SignupRequestDto(

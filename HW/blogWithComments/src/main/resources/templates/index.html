@@ -9,6 +9,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <!--    font-family: 'Jua', sans-serif;-->
     <script>
         $(document).ready(function () {
@@ -52,8 +53,8 @@
                                    ${modifiedAt}
                                </div>
                             </div>
-                        <h2 class='title' id="${id}-title">"${title}"</h2>
-                            <div class="contents" id="${id}-contents" >
+                        <h2 class='title' id="${id}-title">title: "${title}"</h2>
+                            <div style="font-size: x-large"  class="contents" id="${id}-contents" >
                                ${contents}
                             </div>
                             </div>
@@ -67,7 +68,7 @@
         @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
 
         * {
-            font-family: 'Jua', sans-serif !important;
+            font-family: 'Nanum Myeongjo', serif;
         }
 
         body {
@@ -101,7 +102,7 @@
             top: 0px;
             width: 100%;
             height: 428px;
-            background-color: #339af0;
+            background-color: #254806;
         }
 
         .background-body {
@@ -110,7 +111,7 @@
             top: 428px;
             height: 100%;
             width: 100%;
-            background-color: #174978;
+            background-color: #8cc4fc;
         }
 
         .header {
@@ -217,10 +218,10 @@
 <span th:if="${entry} != null">
     <script> alert("이미 로그인했어요")</script>
 </span>
-<div>
+<div style="color: antiquewhite">
     <span th:text="${username}"></span>님 안녕하세요!
 </div>
-<form id="login" method="post" action="/user/login">
+<form id="login" method="get" action="/user/login">
     <button onclick="document.getElementById('login').submit();">로그인</button>
 </form>
 <form id="logout" method="post" action="/user/logout">
@@ -234,7 +235,7 @@
 </div>
 <div class="wrap">
     <div class="header">
-        <h2>로그인 안해도 괜찮아요 일단 써봐요!</h2>
+        <h2>로그인 안해도 괜찮아요 <br>일단 써봐요!</h2>
     </div>
     <div class="to-write">
         <button type="button" class="btn btn-primary" onclick="location.href='write.html'"><b>글 쓰 기</b></button>

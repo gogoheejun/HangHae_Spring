@@ -30,6 +30,7 @@ public class UserController {
     //회원가입페이지
     @GetMapping("/user/signup")
     public String signup(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        System.out.println("signup:"+userDetails);
         if(userDetails != null){
             model.addAttribute("entry","already-logged-in");
             model.addAttribute("username", userDetails.getUsername());
@@ -58,7 +59,10 @@ public class UserController {
     }
 
     @GetMapping("/user/login")
-    public String login(){return "login";}
+    public String login(@AuthenticationPrincipal UserDetailsImpl userDetails, Model model){
+
+        return "login";
+    }
 
     @GetMapping("/user/kakao/callback")
     public String kakaoLogin(@RequestParam String code) throws JsonProcessingException {

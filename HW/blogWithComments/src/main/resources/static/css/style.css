@@ -55,7 +55,7 @@ body {
     line-height: 1;
     letter-spacing: -0.54px;
     text-align: left;
-    color: #E8344E;
+    color: #34b8e8;
 }
 
 .search-itemDto-center span.unit {
@@ -173,7 +173,7 @@ button {
     width: 369.1px;
     height: 43.9px;
     border-radius: 2px;
-    background-color: #15aabf;
+    background-color: #bfa315;
     border: none;
 }
 
@@ -181,7 +181,7 @@ button {
     width: 352.1px;
     height: 43.9px;
     border-radius: 2px;
-    background-color: #15aabf;
+    background-color: #67bf15;
     border: none;
 }
 
@@ -209,7 +209,7 @@ button {
 .header {
     height: 255px;
     box-sizing: border-box;
-    background-color: #15aabf;
+    background-color: #bf9715;
     color: white;
     text-align: center;
     padding-top: 80px;
@@ -472,7 +472,7 @@ button {
     margin: 40px 0 0;
     padding: 11px 12px;
     border-radius: 5px;
-    background-color: #15aabf;
+    background-color: #b415bf;
 
     font-family: SpoqaHanSansNeo;
     font-size: 20px;
@@ -696,7 +696,7 @@ button {
     .header {
         height: 255px;
         box-sizing: border-box;
-        background-color: #15aabf;
+        background-color: #81ec5e;
         color: white;
         text-align: center;
         padding-top: 80px;
@@ -842,7 +842,7 @@ input[type=submit] {
 }
 .autocomplete-active {
     /*when navigating through the items using the arrow keys:*/
-    background-color: DodgerBlue !important;
+    background-color: #56ff1e !important;
     color: #ffffff;
 }
 
