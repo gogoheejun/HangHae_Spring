@@ -89,6 +89,22 @@ class UserServiceTest {
         @Test
         @DisplayName("비밀번호 확인일치안하는 경우")
         void mustFail2(){
+        //given
+            passwordCheck = "wrongnumber";
+            SignupRequestDto requestDto = new SignupRequestDto(
+                    username,
+                    password,
+                    passwordCheck
+            );
+            UserService userService = new UserService(passwordEncoder,userRepository);
+
+        //when
+            Exception exception = assertThrows(CustomValidationException.class,()->{
+                userService.registerUser(requestDto);
+            });
+
+        //then
+            assertEquals("유효성 검사실패", exception.getMessage());
 
         }
     }
